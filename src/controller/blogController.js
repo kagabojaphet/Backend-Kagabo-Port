@@ -5,7 +5,10 @@ import successmessage from "../utils/successmessage";
 class BlogController{
     static async postBlog(req,res){
         try {
-            const blog=await BLOG.create(req.body)
+            const{blogTitle,blogSummary,blogDiscription}=req.body
+            const blogImage = req.file ? req.file.path : null;
+            const blog=await BLOG.create({blogTitle,blogSummary,blogDiscription,blogImage})
+            
             if(!blog){
                 return errormessage(res,401,`Blog Not Created`)
             }
