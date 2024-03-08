@@ -17,10 +17,22 @@ const blogSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    comment:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"COMMENT"
+    }],
     postDate:{
         type:Date,
         default:Date.now()
     }
 })
+blogSchema.pre(/^find/,function(next){
+    this.populate({
+        path:"comment",
+        select:"comment postDate"
+    })
+    return next()
+})
+
 const BLOG=mongoose.model("BLOG",blogSchema)
 export default BLOG
