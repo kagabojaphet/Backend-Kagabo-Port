@@ -10,6 +10,9 @@ class UserController{
     static async createUser(req,res){
         try {
             const {firstName,lastName,phoneNumber,email,role,password}=req.body
+            if(phoneNumber.length!==10 || phoneNumber.length<10){
+                return errormessage(res,401,`Length of PhoneNumber must be Ten`)
+            }
             if(req.body.password!==req.body.confirmPassword){
                 return errormessage(res,401,`Password and ConfirmPassword must be match`)
             }
