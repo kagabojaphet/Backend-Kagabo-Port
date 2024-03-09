@@ -1,5 +1,6 @@
 import BLOG from "../model/blog";
 import USER from "../model/user";
+import blogemail from "../utils/blogEmail";
 import errormessage from "../utils/errormessage";
 import successmessage from "../utils/successmessage";
 
@@ -9,11 +10,14 @@ class BlogController{
             const{blogTitle,blogSummary,blogDiscription}=req.body
             const blogImage = req.file ? req.file.path : null;
             const blog=await BLOG.create({blogTitle,blogSummary,blogDiscription,blogImage})
-            
             if(!blog){
                 return errormessage(res,401,`Blog Not Created`)
             }
             else{
+                const user=await USER.find()
+                user.map((users)=>{
+                    blogemail(users,blog)
+                })
                 return successmessage(res,201,`Blog Successfully created`,blog)
             }
         } catch (error) {
