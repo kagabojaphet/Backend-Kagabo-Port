@@ -21,6 +21,14 @@ const blogSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"COMMENT"
     }],
+    like:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"USER"
+    }],
+    dislike:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"USER"
+    }],
     postDate:{
         type:Date,
         default:Date.now()

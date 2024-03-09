@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const CommentSchema=new mongoose.Schema({
-    users:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"USER"
-    },
     comment:{
         type:String,
         required:true
@@ -12,14 +8,18 @@ const CommentSchema=new mongoose.Schema({
     postDate:{
         type:Date,
         default:Date.now()
+    },
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"USER"
     }
 })
 CommentSchema.pre(/^find/,function(next){
     this.populate({
-        path:"users",
-        select:"firstName,lastName,email,phoneNumber"
+        path:"user",
+        select:""
     })
-     next()
+    next()
 })
 const COMMENT=mongoose.model("COMMENT",CommentSchema)
 export default COMMENT

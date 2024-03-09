@@ -1,7 +1,7 @@
-import BLOG from "../model/blog";
 import COMMENT from "../model/comment";
 import errormessage from "../utils/errormessage";
 import successmessage from "../utils/successmessage";
+import BLOG from "../model/blog";
 
 class CommentController{
     static async postComment(req,res){
@@ -52,5 +52,62 @@ class CommentController{
             return errormessage(res,500,`Error!! ${error}`)
         }
     }
+
+    static async getOneComment(req,res){
+        try {
+            const id=req.params.id
+            if(id.length !==24 || id.length<24){
+                return errormessage(res,401,`Invalid ID`)
+            }
+            const comment=await COMMENT.findById(id)
+            if(!comment){
+                return errormessage(res,401,`Comment Not Found`)
+            }
+            else{
+                return successmessage(res,200,`Comment Successfully Retrieved`,comment)
+            }
+        } catch (error) {
+            return errormessage(res,500,`Error!! ${error}`)
+        }
+    }
+
+    static async deleteOneComment(req,res){
+        try {
+            const id=req.params.id
+            if(id.length !==24 || id.length <24){
+                return errormessage(res,401,`Invalid ID`)
+            }
+            const blog=await COMMENT.findOneAndDelete(id)
+            if(!blog){
+                return errormessage(res,401,`Comment with ${id} Not Deleted`)
+            }
+            else{
+                return successmessage(res,200,`Comment Successfully Deleted`)
+            }
+            } catch (error) {
+                return errormessage(res,500,`Error!! ${error}`)
+            }
+            
+    }
+
+    static async update(req,res){
+        try {
+            const id=req.params.id
+            if(id.length !==24 || id.length <24){
+                return errormessage(res,401,`Invalid ID`)
+            }
+            const comment=await COMMENT.findByIdAndUpdate(id,req.body,{new:true})
+            if(!comment){
+                return errormessage(res,401,`Comment Not Updated`)
+            }
+            else{
+                return successmessage(res,200,`Comment Successfully Updated`,comment)
+            }
+        } catch (error) {
+            return errormessage(res,500,`Error!! ${error}`)
+        }
+    }
+
+
 }
 export default CommentController
