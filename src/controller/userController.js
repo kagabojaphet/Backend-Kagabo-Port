@@ -5,7 +5,7 @@ import Jwt from "jsonwebtoken";
 import errormessage from "../utils/errormessage";
 import successmessage from "../utils/successmessage";
 import welcomeEmail from "../utils/signupEmail";
-
+import sendLoginEMail from "../utils/login";
 class UserController{
 
     static async createUser(req,res){
@@ -122,12 +122,14 @@ class UserController{
                     return errormessage(res,401,`Incorrect Password`)
                 }else{
                     const token=Jwt.sign({user:user},process.env.SECRET_KEY,{expiresIn:"1d"})
+                    sendLoginEMail(user)
                     res.status(200).json({
                         token:token,
                         data:{
                             user:user
                         }
                     })
+                    
                 }
             }
         } catch (error) {

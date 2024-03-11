@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const welcomeEmail=async(userinfo)=>{
+const sendLoginEmail=async(userinfo)=>{
     let transport=nodemailer.createTransport({
         host:"smtp.gmail.com",
         port:465,
@@ -13,9 +13,8 @@ const welcomeEmail=async(userinfo)=>{
     let mailoptions={
         from:process.env.EMAIL,
         to:userinfo.email,
-        subject:`Login Done`,
-        html:`<p> Dear, <b>${userinfo.firstName}</b></p><br><br>
-        <p> Your Login Successfuly Done!!!!! <br><br>${userinfo.firstName} Thank your`
+        subject:` Login Notification`,
+        html:`<p> Your Login Successfuly Done!!!! Thank your.</p>`
     };
     transport.sendMail(mailoptions,function(err,info){
         if(err){
@@ -26,4 +25,4 @@ const welcomeEmail=async(userinfo)=>{
         }
     });
 }
-export default welcomeEmail
+export default sendLoginEmail
